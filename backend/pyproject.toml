@@ -16,6 +16,8 @@ authors = [
 
 # Core dependencies
 dependencies = [
+    "langchain>=1.1.2",
+    "langchain-openai>=1.1.0",
     "python-dotenv>=1.0.0",
 ]
 

@@ -7,38 +7,50 @@ Backend service for experimenting with Large Language Models.
 ### Prerequisites
 
 - Python 3.13.3 or higher
-- pip (Python package installer)
+- uv (fast Python package installer) - [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 ### Setup Instructions
 
-1. **Navigate to backend directory**
+1. **Install uv** (if not already installed)
+
+   ```bash
+   # macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+   # Or with Homebrew
+   brew install uv
+
+   # Or with pip
+   pip install uv
+   ```
+
+2. **Navigate to backend directory**
 
    ```bash
    cd backend
    ```
 
-2. **Create a virtual environment**
+3. **Create a virtual environment** (optional - uv will create one automatically)
 
    ```bash
-   python -m venv venv
-   ```
-
-3. **Activate the virtual environment**
-
-   ```bash
-   source venv/bin/activate
+   uv venv
+   source .venv/bin/activate  # uv uses .venv by default
    ```
 
 4. **Install dependencies**
 
    ```bash
-   # Install production dependencies
-   make install
-   # or: pip install -e .
+   # Recommended: Sync all dependencies (fastest)
+   make sync
+   # or: uv sync --all-extras
 
-   # Install with development dependencies
+   # Alternative: Install production dependencies only
+   make install
+   # or: uv pip install -e .
+
+   # Alternative: Install with development dependencies
    make install-dev
-   # or: pip install -e ".[dev]"
+   # or: uv pip install -e ".[dev]"
    ```
 
 ## Usage
@@ -55,6 +67,10 @@ make run
 ### Installing Development Dependencies
 
 ```bash
+# Recommended with uv
+make sync
+
+# Or install dev dependencies specifically
 make install-dev
 ```
 
@@ -101,7 +117,7 @@ make all
 
 ## Dependency Management
 
-This project uses **`pyproject.toml`** for all dependency management (PEP 518 - modern standard).
+This project uses **`uv`** for fast dependency management with **`pyproject.toml`** (PEP 518 - modern standard).
 
 ### Adding New Dependencies
 
@@ -127,21 +143,41 @@ dev = [
 ]
 ```
 
-Then reinstall:
+Then sync:
 
 ```bash
-pip install -e .           # For production dependencies
-pip install -e ".[dev]"    # For dev dependencies
+make sync                  # Syncs all dependencies
+# or: uv sync --all-extras
+
+# Alternative approach
+uv pip install -e .           # For production dependencies
+uv pip install -e ".[dev]"    # For dev dependencies
+```
+
+### Adding Dependencies via CLI
+
+```bash
+# Add a production dependency
+uv add requests
+
+# Add a development dependency
+uv add --dev pytest-asyncio
+
+# Add with version constraint
+uv add "fastapi>=0.100.0"
 ```
 
 ### Updating Dependencies
 
 ```bash
-# Reinstall with latest versions
-pip install --upgrade -e ".[dev]"
+# Update all dependencies
+uv sync --upgrade
 
 # Update specific package
-pip install --upgrade package-name
+uv pip install --upgrade package-name
+
+# Lock dependencies (creates/updates uv.lock)
+uv lock
 ```
 
 ## Project Configuration

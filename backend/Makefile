@@ -1,7 +1,8 @@
-.PHONY: help install install-dev clean test lint format type-check all run activate
+.PHONY: help install install-dev clean test lint format type-check all run sync
 
 help:
 	@echo "Available commands:"
+	@echo "  make sync         - Sync all dependencies (recommended with uv)"
 	@echo "  make install      - Install production dependencies"
 	@echo "  make install-dev  - Install development dependencies"
 	@echo "  make clean        - Remove build artifacts and caches"
@@ -12,11 +13,14 @@ help:
 	@echo "  make run          - Run the application"
 	@echo "  make all          - Format, lint, type-check, and test"
 
+sync:
+	uv sync --all-extras
+
 install:
-	pip install -e .
+	uv pip install -e .
 
 install-dev:
-	pip install -e ".[dev]"
+	uv pip install -e ".[dev]"
 
 clean:
 	rm -rf build/
